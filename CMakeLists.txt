@@ -12,7 +12,7 @@ project(detrarandom)
 find_package(OpenMP)
 
 file(GLOB_RECURSE SRC 
-  src/*.cpp
+  detrarandom/*.cpp
 )
 
 add_executable(detrarandom_test ${SRC})
