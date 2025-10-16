@@ -15,4 +15,4 @@ file(GLOB_RECURSE SRC
   src/*.cpp
 )
 
-add_library(detrarandom ${SRC})
+add_executable(detrarandom_test ${SRC})
