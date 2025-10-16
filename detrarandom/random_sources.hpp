@@ -11,7 +11,7 @@ struct Base {
     return T::randi() / float(std::numeric_limits<uint32_t>::max());
   }
 
-  bool ranb() { return T::randi() % 2; }
+  bool randb() { return T::randi() % 2; }
 };
 
 struct Standard : public Base<Standard> {
