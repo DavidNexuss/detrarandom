@@ -5,13 +5,16 @@
 
 namespace random_sources {
 
+template <typename T>
 struct Base {
-  float randf(uint32_t i) {
-    return i / float(std::numeric_limits<uint32_t>::max());
+  float randf() {
+    return T::randi() / float(std::numeric_limits<uint32_t>::max());
   }
+
+  bool ranb() { return T::randi() % 2; }
 };
 
-struct Standard : public Base {
+struct Standard : public Base<Standard> {
   std::random_device                      rd;
   std::uniform_int_distribution<uint32_t> dist;
 
@@ -23,7 +26,7 @@ struct Standard : public Base {
   }
 };
 
-struct CStandard : public Base {
+struct CStandard : public Base<CStandard> {
   CStandard() {
     srand(0);
   }
@@ -33,7 +36,7 @@ struct CStandard : public Base {
   }
 };
 
-struct XORand : public Base {
+struct XORand : public Base<XORand> {
   uint32_t state;
 
   XORand(uint32_t seed = 2463534242u) :
@@ -49,7 +52,7 @@ struct XORand : public Base {
   }
 };
 
-struct XORand128 : public Base {
+struct XORand128 : public Base<XORand128> {
   uint64_t s[2];
 
   XORand128(uint64_t seed1 = 0x123456789abcdefULL, uint64_t seed2 = 0xfedcba987654321ULL) {
