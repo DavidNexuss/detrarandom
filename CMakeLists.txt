@@ -12,6 +12,10 @@ project(detrarandom)
 find_package(OpenMP)
 
 file(GLOB_RECURSE SRC 
+  src/*.cpp
+)
+
+file(GLOB_RECURSE INCLUDE_SRC
   detrarandom/*.cpp
 )
 
