@@ -3,18 +3,23 @@
 #include <limits>
 #include <random>
 
+#define RANDOM_FUNCTIONS                           \
+                                                   \
+  inline float                                     \
+  randf() {                                        \
+                                                   \
+    return randi() /                               \
+      float(std::numeric_limits<uint32_t>::max()); \
+  }                                                \
+                                                   \
+                                                   \
+  inline bool                                      \
+  randb() { return randi() % 2; }
+
+
 namespace random_sources {
 
-template <typename T>
-struct Base {
-  float randf() {
-    return T::randi() / float(std::numeric_limits<uint32_t>::max());
-  }
-
-  bool randb() { return T::randi() % 2; }
-};
-
-struct Standard : public Base<Standard> {
+struct Standard {
   std::random_device                      rd;
   std::uniform_int_distribution<uint32_t> dist;
 
@@ -24,9 +29,11 @@ struct Standard : public Base<Standard> {
   uint32_t randi() {
     return dist(rd);
   }
+
+  RANDOM_FUNCTIONS
 };
 
-struct CStandard : public Base<CStandard> {
+struct CStandard {
   CStandard() {
     srand(0);
   }
@@ -34,9 +41,11 @@ struct CStandard : public Base<CStandard> {
   uint32_t randi() {
     return rand();
   }
+
+  RANDOM_FUNCTIONS
 };
 
-struct XORand : public Base<XORand> {
+struct XORand {
   uint32_t state;
 
   XORand(uint32_t seed = 2463534242u) :
@@ -50,9 +59,10 @@ struct XORand : public Base<XORand> {
     state = x;
     return x;
   }
+  RANDOM_FUNCTIONS
 };
 
-struct XORand128 : public Base<XORand128> {
+struct XORand128 {
   uint64_t s[2];
 
   XORand128(uint64_t seed1 = 0x123456789abcdefULL, uint64_t seed2 = 0xfedcba987654321ULL) {
@@ -68,6 +78,10 @@ struct XORand128 : public Base<XORand128> {
     s[1] = x ^ y ^ (x >> 17) ^ (y >> 26);
     return s[1] + y;
   }
+
+  RANDOM_FUNCTIONS
 };
+
+#undef RANDOM_FUNCTIONS
 
 } // namespace random_sources
