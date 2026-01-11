@@ -12,6 +12,11 @@
       float(std::numeric_limits<uint32_t>::max()); \
   }                                                \
                                                    \
+  inline float                                     \
+  randf(float min, float max) {                    \
+                                                   \
+    return min + randf() * (max - min);            \
+  }                                                \
                                                    \
   inline bool                                      \
   randb() { return randi() % 2; }
